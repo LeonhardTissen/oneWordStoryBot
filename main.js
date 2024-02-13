@@ -80,8 +80,6 @@ client.on('messageCreate', async message => {
 			message.author.send('Your message should be a valid word.');
 			return;
 		}
-
-		return;
 	}
 
 	// Add the user to the lastUsers array
