@@ -4,6 +4,7 @@ const client = new Client({
 	partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember, Partials.Reaction],
 });
 const fs = require('fs');
+const path = require('path');
 
 // Load token from .env file
 const env = require('dotenv').config().parsed;
@@ -13,7 +14,8 @@ const maxUsers = 3; // Maximum number of consecutive users allowed to contribute
 let story = ''; // The story string
 let lastUsers = []; // Array to store the last users who contributed
 let storyMessage = null; // The message object of the story
-const storyChannelId = '1207024002296455168';
+
+const validPunctuation = ['?', '.', '!', '...', ',']; // Punctuation that is allowed to end the sentence
 
 client.once('ready', () => {
 	console.log('Bot is ready');
@@ -37,9 +39,16 @@ async function verifyWord(word) {
 }
 
 function addToLogFile(message) {
-	const path = require('path');
 	const filePath = path.join(__dirname, 'log.txt');
 	fs.appendFileSync(filePath, message + '\n');
+}
+
+function trySendToUser(message, string) {
+	try {
+		message.author.send(string);
+	} catch (error) {
+		console.error('Could not send message to user');
+	}
 }
 
 client.on('messageCreate', async message => {
@@ -47,7 +56,7 @@ client.on('messageCreate', async message => {
     if (message.author.bot) return;
 
 	// Ignore messages from other channels
-	if (message.channel.id !== storyChannelId) return;
+	if (message.channel.id !== env.CHANNEL) return;
 
 	// Log the user's message
 	const logMessage = `${message.author.username} (${message.author.id}): ${message.content}`;
@@ -59,17 +68,17 @@ client.on('messageCreate', async message => {
 
     if (lastUsers.includes(message.author.id)) {
 		// Send private message to the user
-		message.author.send('You have already contributed to the story. Please wait for others to contribute before you can contribute again.');
+		trySendToUser(message, 'You have already contributed to the story. Please wait for others to contribute before you can contribute again.')
 		return;
 	}
 
 	// Check if the message is either ?, . or ! these are allowed to end
-	if (!['?', '.', '!', '...'].includes(message.content)) {
+	if (!validPunctuation.includes(message.content)) {
 
 		// Verify if the message is only a single, alphanumeric word
 		if (!/^\w+$/.test(message.content)) {
 			// Send private message to the user
-			message.author.send('Your message should only contain a single, alphanumeric word.');
+			trySendToUser(message, 'Your message should only contain a single, alphanumeric word.');
 			return;
 		}
 	
@@ -77,7 +86,7 @@ client.on('messageCreate', async message => {
 		const isValidWord = await verifyWord(message.content);
 		if (!isValidWord) {
 			// Send private message to the user
-			message.author.send('Your message should be a valid word.');
+			trySendToUser(message, 'Your message should be a valid word.');
 			return;
 		}
 	}
