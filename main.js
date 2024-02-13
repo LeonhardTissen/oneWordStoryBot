@@ -3,6 +3,7 @@ const client = new Client({
 	intents: Object.values(GatewayIntentBits),
 	partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember, Partials.Reaction],
 });
+const fs = require('fs');
 
 // Load token from .env file
 const env = require('dotenv').config().parsed;
@@ -34,7 +35,6 @@ async function verifyWord(word) {
 }
 
 function addToLogFile(message) {
-	const fs = require('fs');
 	const path = require('path');
 	const filePath = path.join(__dirname, 'log.txt');
 	fs.appendFileSync(filePath, message + '\n');
@@ -50,7 +50,7 @@ client.on('messageCreate', async message => {
 	// Delete the user's message
 	message.delete();
 
-    if (lastUsers.includes(message.author.id) && false) {
+    if (lastUsers.includes(message.author.id)) {
 		// Send private message to the user
 		message.author.send('You have already contributed to the story. Please wait for others to contribute before you can contribute again.');
 		return;
