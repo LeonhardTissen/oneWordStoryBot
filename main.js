@@ -83,7 +83,7 @@ client.on('messageCreate', async message => {
 		}
 	
 		// Verify that the word is valid
-		const isValidWord = await verifyWord(message.content);
+		const isValidWord = await verifyWord(message.content.toLowerCase());
 		if (!isValidWord) {
 			// Send private message to the user
 			trySendToUser(message, 'Your message should be a valid word.');
