@@ -103,7 +103,7 @@ client.on('messageCreate', async message => {
 		lastUsers.shift();
 	}
 
-	const word = isStartOfSentence ? message.content.charAt(0).toUpperCase() + message.content.slice(1) : message.content;
+	const word = isStartOfSentence ? message.content.charAt(0).toUpperCase() + message.content.slice(1).toLowerCase() : message.content.toLowerCase();
 
 	const append = isPunctuation ? word : ' ' + word;
 
