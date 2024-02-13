@@ -64,6 +64,12 @@ client.on('messageCreate', async message => {
 	addToLogFile(logMessage);
 	console.log(logMessage);
 
+	if (message.content === 'done') {
+		story = '';
+		storyMessage = null;
+		return;
+	}
+
 	// Delete the user's message
 	message.delete();
 
@@ -124,7 +130,7 @@ client.on('messageCreate', async message => {
 	console.log(lastUsers);
 
 	// Set isStartOfSentence to true if the last character of the message is a valid punctuation
-	isStartOfSentence = validPunctuation.includes(message.content);
+	isStartOfSentence = validPunctuation.includes(message.content) && message.content !== ',';
 });
 
 // Login to Discord with your app's token
