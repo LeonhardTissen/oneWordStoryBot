@@ -14,6 +14,7 @@ const maxUsers = 3; // Maximum number of consecutive users allowed to contribute
 let story = ''; // The story string
 let lastUsers = []; // Array to store the last users who contributed
 let storyMessage = null; // The message object of the story
+let isStartOfSentence = true; // Whether the next word should be the start of a sentence
 
 const validPunctuation = ['?', '.', '!', '...', ',']; // Punctuation that is allowed to end the sentence
 
@@ -99,7 +100,9 @@ client.on('messageCreate', async message => {
 		lastUsers.shift();
 	}
 
-	const append = message.content + ' ';
+	const word = isStartOfSentence ? message.content.charAt(0).toUpperCase() + message.content.slice(1) : message.content;
+
+	const append = word + ' ';
 
 	// Add the user's message to the story
 	story += append;
@@ -116,6 +119,9 @@ client.on('messageCreate', async message => {
 	}
 
 	console.log(lastUsers);
+
+	// Set isStartOfSentence to true if the last character of the message is a valid punctuation
+	isStartOfSentence = validPunctuation.includes(message.content);
 });
 
 // Login to Discord with your app's token
