@@ -56,7 +56,6 @@ client.on('messageCreate', async message => {
     if (message.author.bot) return;
 
 	// Ignore messages from other channels
-	console.log(message.channel.id, env.CHANNEL);
 	if (message.channel.id !== env.CHANNEL) return;
 
 	// Log the user's message
