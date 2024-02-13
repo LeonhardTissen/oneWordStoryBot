@@ -47,6 +47,11 @@ client.on('messageCreate', async message => {
 	// Ignore messages from other channels
 	if (message.channel.id !== storyChannelId) return;
 
+	// Log the user's message
+	const logMessage = `${message.author.username} (${message.author.id}): ${message.content}`;
+	addToLogFile(logMessage);
+	console.log(logMessage);
+
 	// Delete the user's message
 	message.delete();
 
@@ -101,10 +106,6 @@ client.on('messageCreate', async message => {
 		storyMessage = await message.channel.send(story);
 	}
 
-	// Log the user's message
-	const logMessage = `${message.author.username} (${message.author.id}): ${message.content}`;
-	addToLogFile(logMessage);
-	console.log(logMessage);
 	console.log(lastUsers);
 });
 
