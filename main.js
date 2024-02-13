@@ -67,6 +67,7 @@ client.on('messageCreate', async message => {
 	if (message.content.toLowerCase() === 'end of story') {
 		story = '';
 		storyMessage = null;
+		isStartOfSentence = true;
 		return;
 	}
 
