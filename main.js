@@ -29,8 +29,10 @@ client.once('ready', () => {
 const api = 'https://wild-erin-harp-seal-vest.cyclic.app/ww';
 
 async function verifyWord(word) {
+	console.log(`Verifying word: ${word}`);
 	const response = await fetch(`${api}/check?word=${word}`);
 	const responseObject = await response.json();
+	console.log(responseObject);
 	return responseObject.result;
 }
 
