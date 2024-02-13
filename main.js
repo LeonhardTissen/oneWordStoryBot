@@ -105,7 +105,7 @@ client.on('messageCreate', async message => {
 
 	const word = isStartOfSentence ? message.content.charAt(0).toUpperCase() + message.content.slice(1) : message.content;
 
-	const append = word + (isPunctuation ? '\n' : ' ');
+	const append = isPunctuation ? word : ' ' + word;
 
 	// Add the user's message to the story
 	story += append;
