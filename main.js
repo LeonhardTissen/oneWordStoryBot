@@ -45,11 +45,9 @@ function addToLogFile(message) {
 }
 
 function trySendToUser(message, string) {
-	try {
-		message.author.send(string);
-	} catch (error) {
-		console.error('Could not send message to user');
-	}
+	message.author.send(string).catch(() => {
+        console.log('Failed to send message to user');
+    });
 }
 
 client.on('messageCreate', async message => {
