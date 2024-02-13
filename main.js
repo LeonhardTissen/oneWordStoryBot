@@ -9,7 +9,7 @@ const path = require('path');
 // Load token from .env file
 const env = require('dotenv').config().parsed;
 
-const maxUsers = 3; // Maximum number of consecutive users allowed to contribute
+const maxUsers = parseInt(env.USERBLOCK); // Maximum number of consecutive users allowed to contribute
 
 let story = ''; // The story string
 let lastUsers = []; // Array to store the last users who contributed
@@ -88,6 +88,8 @@ client.on('messageCreate', async message => {
 			trySendToUser(message, 'Your message should be a valid word.');
 			return;
 		}
+	} else {
+		story += '\n' // Remove the last character of the story
 	}
 
 	// Add the user to the lastUsers array
