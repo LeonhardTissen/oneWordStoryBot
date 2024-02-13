@@ -72,7 +72,8 @@ client.on('messageCreate', async message => {
 	}
 
 	// Check if the message is either ?, . or ! these are allowed to end
-	if (!validPunctuation.includes(message.content)) {
+	const isPunctuation = validPunctuation.includes(message.content);
+	if (!isPunctuation) {
 
 		// Verify if the message is only a single, alphanumeric word
 		if (!/^\w+$/.test(message.content)) {
@@ -88,8 +89,6 @@ client.on('messageCreate', async message => {
 			trySendToUser(message, 'Your message should be a valid word.');
 			return;
 		}
-	} else {
-		story += '\n' // Remove the last character of the story
 	}
 
 	// Add the user to the lastUsers array
@@ -102,7 +101,7 @@ client.on('messageCreate', async message => {
 
 	const word = isStartOfSentence ? message.content.charAt(0).toUpperCase() + message.content.slice(1) : message.content;
 
-	const append = word + ' ';
+	const append = word + isPunctuation ? ' ' : '\n';
 
 	// Add the user's message to the story
 	story += append;
