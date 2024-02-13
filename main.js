@@ -70,15 +70,15 @@ client.on('messageCreate', async message => {
 		return;
 	}
 
+	// Delete the user's message
+	message.delete();
+
 	// Too long
 	if (message.content.length > 20) {
 		// Send private message to the user
 		trySendToUser(message, 'Your message is too long.');
 		return;
 	}
-
-	// Delete the user's message
-	message.delete();
 
     if (lastUsers.includes(message.author.id)) {
 		// Send private message to the user
