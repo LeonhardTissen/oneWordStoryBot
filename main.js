@@ -11,6 +11,8 @@ const env = require('dotenv').config().parsed;
 
 const maxUsers = parseInt(env.USERBLOCK); // Maximum number of consecutive users allowed to contribute
 
+const verifyWords = env.VERIFY === 'yes';
+
 let story = ''; // The story string
 let lastUsers = []; // Array to store the last users who contributed
 let storyMessage = null; // The message object of the story
@@ -82,12 +84,14 @@ client.on('messageCreate', async message => {
 			return;
 		}
 	
-		// Verify that the word is valid
-		const isValidWord = await verifyWord(message.content.toLowerCase());
-		if (!isValidWord) {
-			// Send private message to the user
-			trySendToUser(message, 'Your message should be a valid word.');
-			return;
+		if (verifyWords) {
+			// Verify that the word is valid
+			const isValidWord = await verifyWord(message.content.toLowerCase());
+			if (!isValidWord) {
+				// Send private message to the user
+				trySendToUser(message, 'Your message should be a valid word.');
+				return;
+			}
 		}
 	}
 
