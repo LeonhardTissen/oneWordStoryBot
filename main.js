@@ -64,7 +64,7 @@ client.on('messageCreate', async message => {
 	addToLogFile(logMessage);
 	console.log(logMessage);
 
-	if (message.content === 'done') {
+	if (message.content.toLowerCase() === 'end of story') {
 		story = '';
 		storyMessage = null;
 		return;
