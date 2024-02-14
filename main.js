@@ -92,7 +92,7 @@ client.on('messageCreate', async message => {
 	if (!isPunctuation) {
 
 		// Verify if the message is only a single, alphanumeric word
-		if (!/^\w+$/.test(message.content)) {
+		if (!/^[A-Za-z\d%"':;]+$/.test(message.content)) {
 			// Send private message to the user
 			trySendToUser(message, 'Your message should only contain a single, alphanumeric word.');
 			return;
