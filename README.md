@@ -7,7 +7,7 @@
 npm i
 ```
 
-### Create `.env`:
+### Rename example.env to .env and fill in the required information:
 ```env
 TOKEN=YOUR_BOT_TOKEN_HERE
 CHANNEL=1207024002296455168
