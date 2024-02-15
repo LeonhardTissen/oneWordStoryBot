@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits, ActivityType, Partials } = require("discord.js");
 const client = new Client({
 	intents: Object.values(GatewayIntentBits),
-	partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember, Partials.Reaction],
+	partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember],
 });
 const fs = require('fs');
 const path = require('path');
@@ -19,6 +19,16 @@ let storyMessage = null; // The message object of the story
 let isStartOfSentence = true; // Whether the next word should be the start of a sentence
 
 const validPunctuation = ['?', '.', '!', '...', ',']; // Punctuation that is allowed to end the sentence
+
+const allowedSpecialCharactersList = ['%', '"', "'", ':', ';', '(', ')', '*', '<', '>'];
+
+function allowedRegexBuilder() {
+	const allowedSpecialCharacters = allowedSpecialCharactersList.join('');
+	const allowedNumbers = '\\d';
+	return new RegExp(`^[A-Za-z${allowedSpecialCharacters}${allowedNumbers}]+$`);
+}
+
+const allowedRegex = allowedRegexBuilder();
 
 client.once('ready', () => {
 	console.log('Bot is ready');
@@ -42,6 +52,7 @@ async function verifyWord(word) {
 }
 
 function addToLogFile(message) {
+	console.log(message);
 	const filePath = path.join(__dirname, 'log.txt');
 	fs.appendFileSync(filePath, message + '\n');
 }
@@ -62,7 +73,6 @@ client.on('messageCreate', async message => {
 	// Log the user's message
 	const logMessage = `${message.author.username} (${message.author.id}): ${message.content}`;
 	addToLogFile(logMessage);
-	console.log(logMessage);
 
 	if (message.content.toLowerCase() === 'end of story') {
 		story = '';
@@ -92,7 +102,7 @@ client.on('messageCreate', async message => {
 	if (!isPunctuation) {
 
 		// Verify if the message is only a single, alphanumeric word
-		if (!/^[A-Za-z\d%"':;()*<>]+$/.test(message.content)) {
+		if (!allowedRegex.test(message.content)) {
 			// Send private message to the user
 			trySendToUser(message, 'Your message should only contain a single, alphanumeric word.');
 			return;
@@ -117,6 +127,7 @@ client.on('messageCreate', async message => {
 		lastUsers.shift();
 	}
 
+	// Capitalize the first letter of the message if it's the start of a sentence and lowercase the rest
 	const word = isStartOfSentence ? message.content.charAt(0).toUpperCase() + message.content.slice(1).toLowerCase() : message.content.toLowerCase();
 
 	const append = isPunctuation ? word : ' ' + word;
@@ -135,7 +146,7 @@ client.on('messageCreate', async message => {
 		storyMessage = await message.channel.send(story);
 	}
 
-	console.log(lastUsers);
+	// console.log(lastUsers);
 
 	// Set isStartOfSentence to true if the last character of the message is a valid punctuation
 	isStartOfSentence = validPunctuation.includes(message.content) && message.content !== ',';
