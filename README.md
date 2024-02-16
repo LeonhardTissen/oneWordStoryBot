@@ -15,10 +15,10 @@ USERBLOCK=3
 VERIFY=yes
 ```
 
-`TOKEN`: The bot token you get from the Discord Developer Portal.
-`CHANNEL`: The channel ID where the bot should listen and write the story.
-`USERBLOCK`: The amount of users that can't write a word if the already wrote a word recently.
-`VERIFY`: If set to "yes", the bot will verify if the word is a valid word in the English language.
+- `TOKEN`: The bot token you get from the Discord Developer Portal.
+- `CHANNEL`: The channel ID where the bot should listen and write the story.
+- `USERBLOCK`: The amount of users that can't write a word if the already wrote a word recently.
+- `VERIFY`: If set to "yes", the bot will verify if the word is a valid word in the English language.
 
 ### Run the bot script:
 ```
