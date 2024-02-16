@@ -20,7 +20,7 @@ let isStartOfSentence = true; // Whether the next word should be the start of a 
 
 const validPunctuation = ['?', '.', '!', '...', ',', ':']; // Punctuation that is allowed to end the sentence
 
-const allowedSpecialCharactersList = ['%', '"', "'", ':', ';', '(', ')', '*', '<', '>'];
+const allowedSpecialCharactersList = ['%', '"', "'", ':', ';', '(', ')', '*', '<', '>', '_', '-'];
 
 function allowedRegexBuilder() {
 	const allowedSpecialCharacters = allowedSpecialCharactersList.join('');
@@ -85,7 +85,7 @@ client.on('messageCreate', async message => {
 	message.delete();
 
 	// Too long
-	if (message.content.length > 20) {
+	if (message.content.length > 32) {
 		// Send private message to the user
 		trySendToUser(message, 'Your message is too long.');
 		return;
