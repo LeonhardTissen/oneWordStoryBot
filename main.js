@@ -18,7 +18,7 @@ let lastUsers = []; // Array to store the last users who contributed
 let storyMessage = null; // The message object of the story
 let isStartOfSentence = true; // Whether the next word should be the start of a sentence
 
-const validPunctuation = ['?', '.', '!', '...', ',']; // Punctuation that is allowed to end the sentence
+const validPunctuation = ['?', '.', '!', '...', ',', ':']; // Punctuation that is allowed to end the sentence
 
 const allowedSpecialCharactersList = ['%', '"', "'", ':', ';', '(', ')', '*', '<', '>'];
 
