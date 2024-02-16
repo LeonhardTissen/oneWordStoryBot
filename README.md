@@ -1,6 +1,8 @@
 # oneWordStoryBot
 
-## A Discord Bot allowing Users to write a story, one word at a time.
+A Discord Bot allowing Users to write a story, one word at a time.
+
+## Setup
 
 ### Install dependencies:
 ```
@@ -24,6 +26,13 @@ VERIFY=yes
 ```
 node main.js
 ```
+
+## Usage
+
+- In the channel of your choice, users must send a word between 1-20 characters or one of the following: . , ... ? !
+- Messages that don't abide by this are not added to the story and the user is notified directly.
+- A new story will be started either when it reaches 2000 characters (Discord limit) or a user says "end of story", all other messages are deleted.
+- A user cannot send multiple words consequtively and must wait for other users to contribute. The amount of users needed for the flow of a story can be configured.
 
 ### If you enjoy this bot, please leave a Star ⭐
 
