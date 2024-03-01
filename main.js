@@ -14,6 +14,7 @@ const maxUsers = parseInt(env.USERBLOCK); // Maximum number of consecutive users
 const verifyWords = env.VERIFY === 'yes';
 
 let story = ''; // The story string
+let lastWord = ''; // The last word of the story
 let lastUsers = []; // Array to store the last users who contributed
 let storyMessage = null; // The message object of the story
 let isStartOfSentence = true; // Whether the next word should be the start of a sentence
@@ -78,6 +79,7 @@ client.on('messageCreate', async message => {
 		story = '';
 		storyMessage = null;
 		isStartOfSentence = true;
+		lastWord = '';
 		return;
 	}
 
@@ -119,6 +121,12 @@ client.on('messageCreate', async message => {
 		}
 	}
 
+	if (lastWord !== '' && lastWord.toLowerCase() === message.content.toLowerCase()) {
+		// Send private message to the user
+		trySendToUser(message, 'Your message can\'t be the same as the last word.');
+		return;
+	}
+
 	// Add the user to the lastUsers array
 	lastUsers.push(message.author.id);
 
@@ -129,6 +137,9 @@ client.on('messageCreate', async message => {
 
 	// Capitalize the first letter of the message if it's the start of a sentence and lowercase the rest
 	const word = isStartOfSentence ? message.content.charAt(0).toUpperCase() + message.content.slice(1).toLowerCase() : message.content.toLowerCase();
+	
+	// Set the lastWord to the current word
+	lastWord = word;
 
 	const append = isPunctuation ? word : ' ' + word;
 
